@@ -1,0 +1,14 @@
+﻿{
+  "authors": [ "Joshua Moon" ],
+  "dependencies": {
+    "PDFsharp-MigraDoc-gdi": "1.32.4334"
+  },
+  "description": "A set of utility methods to extend MigraDoc's functionality and usefulness, and to aid ease of use.",
+  "frameworks": {
+    "dnx451": { }
+  },
+  "licenseUrl": "",
+  "projectUrl": "",
+  "tags": [ "" ],
+  "version": "0.1.0-dev-*"
+}
