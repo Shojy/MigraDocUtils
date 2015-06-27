@@ -9,6 +9,7 @@
 namespace Shojy.MigraDocUtils
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using MigraDoc.DocumentObjectModel;
@@ -21,6 +22,18 @@ namespace Shojy.MigraDocUtils
     /// </summary>
     public static class TableExtensions
     {
+        #region Private Fields
+
+        private static Dictionary<Table, int[]> autoTables;
+
+        #endregion Private Fields
+
+        #region Private Properties
+
+        private static Dictionary<Table, int[]> AutoTables => autoTables ?? (autoTables = new Dictionary<Table, int[]>());
+
+        #endregion Private Properties
+
         #region Public Methods
 
         /// <summary>
@@ -120,6 +133,60 @@ namespace Shojy.MigraDocUtils
                 cell.AddData(obj);
 
                 row.Cells.Add(cell);
+            }
+
+            return table;
+        }
+
+        /// <summary>
+        /// Creates a table where column widths scale according to their content size,
+        /// </summary>
+        /// <param name="section">The section.</param>
+        /// <param name="fullWidth">The full width.</param>
+        /// <param name="minColumnWidths">The min column widths.</param>
+        /// <returns>The <see cref="Table" />.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Combined value of <paramref name="minColumnWidths" /> exceeds the maxmimum table width
+        /// specified in <paramref name="fullWidth" />.
+        /// </exception>
+        /// <exception cref="SystemException">
+        /// Unable to create table. An unknown error occurred.
+        /// </exception>
+        /// <exception cref="OverflowException">
+        /// Combined minimum widths exceed maximum int value.
+        /// </exception>
+        public static Table CreateAutoWidthTable(this Section section, int fullWidth, params int[] minColumnWidths)
+        {
+            var table = section.AddTable();
+            if (null != minColumnWidths)
+            {
+                try
+                {
+                    var totalMin = minColumnWidths.Sum();
+
+                    if (totalMin > fullWidth)
+                    {
+                        throw new ArgumentOutOfRangeException(
+                            nameof(minColumnWidths),
+                            "Combined minimum width exceeds the maximum table width.");
+                    }
+                }
+                catch (OverflowException overflowException)
+                {
+                    throw new OverflowException("Combined minimum widths exceed maximum int value.", overflowException);
+                }
+                catch (ArgumentNullException argumentException)
+                {
+                    throw new SystemException("Unable to create table. An unknown error occurred.", argumentException);
+                }
+            }
+            try
+            {
+                AutoTables.Add(table, minColumnWidths);
+            }
+            catch (ArgumentException argumentException)
+            {
+                throw new SystemException("Unable to create table. An unknown error occurred.", argumentException);
             }
 
             return table;
