@@ -55,7 +55,15 @@ namespace Shojy.MigraDocUtils
         /// <param name="data">The data.</param>
         public static void AddData(this Cell cell, object data)
         {
-            if (data is Paragraph)
+            if (data is FormattedText)
+            {
+                cell.AddParagraph().Add((FormattedText)data);
+            }
+            else if (data is Text)
+            {
+                cell.AddParagraph().Add((Text)data);
+            }
+            else if (data is Paragraph)
             {
                 cell.Add((Paragraph)data);
             }
@@ -70,14 +78,6 @@ namespace Shojy.MigraDocUtils
             else if (data is Chart)
             {
                 cell.Add((Chart)data);
-            }
-            else if (data is Text)
-            {
-                cell.AddParagraph().Add((Text)data);
-            }
-            else if (data is FormattedText)
-            {
-                cell.AddParagraph().Add((FormattedText)data);
             }
             else
             {
@@ -135,11 +135,15 @@ namespace Shojy.MigraDocUtils
                 row.Cells.Add(cell);
             }
 
+            if (AutoTables.ContainsKey(table))
+            {
+            }
+
             return table;
         }
 
         /// <summary>
-        /// Creates a table where column widths scale according to their content size,
+        /// Creates a table where column widths scale according to their content size.
         /// </summary>
         /// <param name="section">The section.</param>
         /// <param name="fullWidth">The full width.</param>
@@ -157,7 +161,54 @@ namespace Shojy.MigraDocUtils
         /// </exception>
         public static Table CreateAutoWidthTable(this Section section, int fullWidth, params int[] minColumnWidths)
         {
+            var table = CreateAutoWidthTable(fullWidth, minColumnWidths);
+
+            section.Add(table);
+
+            return table;
+        }
+
+        /// <summary>
+        /// The create table.
+        /// </summary>
+        /// <param name="section">The section.</param>
+        /// <param name="columnWidths">The column widths.</param>
+        /// <returns>The <see cref="Table" />.</returns>
+        public static Table CreateTable(this Section section, params int[] columnWidths)
+        {
             var table = section.AddTable();
+
+            foreach (var width in columnWidths)
+            {
+                table.Columns.AddColumn().Width = width;
+            }
+
+            return table;
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
+
+        /// <summary>
+        /// Creates a table where column widths scale according to their content size.
+        /// </summary>
+        /// <param name="fullWidth">The full width.</param>
+        /// <param name="minColumnWidths">The min column widths.</param>
+        /// <returns>The <see cref="Table" />.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Combined value of <paramref name="minColumnWidths" /> exceeds the maxmimum table width
+        /// specified in <paramref name="fullWidth" />.
+        /// </exception>
+        /// <exception cref="SystemException">
+        /// Unable to create table. An unknown error occurred.
+        /// </exception>
+        /// <exception cref="OverflowException">
+        /// Combined minimum widths exceed maximum int value.
+        /// </exception>
+        private static Table CreateAutoWidthTable(int fullWidth, params int[] minColumnWidths)
+        {
+            var table = new Table();
             if (null != minColumnWidths)
             {
                 try
@@ -192,24 +243,6 @@ namespace Shojy.MigraDocUtils
             return table;
         }
 
-        /// <summary>
-        /// The create table.
-        /// </summary>
-        /// <param name="section">The section.</param>
-        /// <param name="columnWidths">The column widths.</param>
-        /// <returns>The <see cref="Table" />.</returns>
-        public static Table CreateTable(this Section section, params int[] columnWidths)
-        {
-            var table = section.AddTable();
-
-            foreach (var width in columnWidths)
-            {
-                table.Columns.AddColumn().Width = width;
-            }
-
-            return table;
-        }
-
-        #endregion Public Methods
+        #endregion Private Methods
     }
 }
