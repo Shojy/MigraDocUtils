@@ -55,6 +55,7 @@ namespace Shojy.MigraDocUtils
         /// <param name="data">The data.</param>
         public static void AddData(this Cell cell, object data)
         {
+            // Todo: Reorder based on frequency of use for performace
             if (data is FormattedText)
             {
                 cell.AddParagraph().Add((FormattedText)data);

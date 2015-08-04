@@ -50,7 +50,6 @@ namespace Shojy.MigraDocUtils
         public static FormattedText AddHtmlText(this FormattedText text, string html)
         {
             return text.AddFormattedText();
-
         }
 
         #endregion Public Methods
@@ -122,7 +121,7 @@ namespace Shojy.MigraDocUtils
         /// <param name="text">The text.</param>
         private static void RenderHtmlElement(HtmlNode element, Paragraph text)
         {
-            switch (element.Name)
+            switch (element.Name.ToLower())
             {
                 case "p":
                     text.Style = Styles.Paragraph;
@@ -163,7 +162,7 @@ namespace Shojy.MigraDocUtils
         /// <param name="text">The text.</param>
         private static void RenderHtmlElement(HtmlNode element, FormattedText text)
         {
-            switch (element.Name)
+            switch (element.Name.ToLower())
             {
                 case "b":
                 case "strong":

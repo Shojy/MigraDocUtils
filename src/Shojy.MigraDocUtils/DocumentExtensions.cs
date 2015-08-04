@@ -116,6 +116,7 @@ namespace Shojy.MigraDocUtils
             {
                 var c = (Character)obj;
                 builder.Append(c.Char != '\0' ? c.Char : c.SymbolName.ToChar());
+                return;
             }
 
             // If not, we should get the children of the element and recurse on them.
