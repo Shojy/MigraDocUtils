@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Shojy.MigraDocUtils</id>
+    <version>0.1.1</version>
+    <authors>Shojy</authors>
+    <owners>Shojy</owners>
+    <projectUrl>https://github.com/Shojy/MigraDocUtils</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Collection of utilities to aid MigraDoc users.</description>
+    <releaseNotes>Initial Test</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>MigraDoc PdfSharp HTML Tools Extensions Utils Utilities PDF Document</tags>
+    <dependencies>
+        <dependency id="HtmlAgilityPack" version="1.4.9" />
+        <dependency id="PDFsharp-MigraDoc-GDI" version="1.32.4334.0" />
+    </dependencies>
+  </metadata>
+</package>

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Shojy.MigraDocUtils.Tests")]
+[assembly: AssemblyTitle("Shojy.MigraDocUtils")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Shojy.MigraDocUtils.Tests")]
+[assembly: AssemblyProduct("Shojy.MigraDocUtils")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("eeadcaa1-0b36-41e9-89f6-dfc63394eeb3")]
+[assembly: Guid("5ee6239b-93c9-4545-b85e-5d809b3be7b3")]
 
 // Version information for an assembly consists of the following four values:
 //

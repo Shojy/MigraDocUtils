@@ -50,6 +50,7 @@ namespace Shojy.MigraDocUtils
         public static FormattedText AddHtmlText(this FormattedText text, string html)
         {
             return text.AddFormattedText();
+
         }
 
         #endregion Public Methods

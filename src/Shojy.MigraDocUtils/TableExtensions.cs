@@ -8,14 +8,13 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Shojy.MigraDocUtils
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
     using MigraDoc.DocumentObjectModel;
     using MigraDoc.DocumentObjectModel.Shapes;
     using MigraDoc.DocumentObjectModel.Shapes.Charts;
     using MigraDoc.DocumentObjectModel.Tables;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// The table extensions.
@@ -30,7 +29,8 @@ namespace Shojy.MigraDocUtils
 
         #region Private Properties
 
-        private static Dictionary<Table, int[]> AutoTables => autoTables ?? (autoTables = new Dictionary<Table, int[]>());
+        private static Dictionary<Table, int[]> AutoTables
+        { get { return autoTables ?? (autoTables = new Dictionary<Table, int[]>()); } }
 
         #endregion Private Properties
 
@@ -97,9 +97,7 @@ namespace Shojy.MigraDocUtils
         /// Number of <paramref name="data" /> values to add must be equal to or fewer than the
         /// number of columns in the table.
         /// </exception>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="data" /> is <see langword="null" />.
-        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="data" /> is <see langword="null" />.</exception>
         /// <exception cref="OverflowException">
         /// Number of values in <paramref name="data" /> exceeds the maximum countable value.
         /// </exception>
@@ -108,14 +106,14 @@ namespace Shojy.MigraDocUtils
             // Validate the data values to be added to the table.
             if (null == data)
             {
-                throw new ArgumentNullException(nameof(data), "data cannot be null.");
+                throw new ArgumentNullException("data", "data cannot be null.");
             }
 
             try
             {
                 if (table.Columns.Count < data.Count())
                 {
-                    throw new ArgumentOutOfRangeException(nameof(data), "Number of values to add is greater than the number of columns in the table");
+                    throw new ArgumentOutOfRangeException("data", "Number of values to add is greater than the number of columns in the table");
                 }
             }
             catch (OverflowException overflowException)
@@ -153,9 +151,7 @@ namespace Shojy.MigraDocUtils
         /// Combined value of <paramref name="minColumnWidths" /> exceeds the maxmimum table width
         /// specified in <paramref name="fullWidth" />.
         /// </exception>
-        /// <exception cref="SystemException">
-        /// Unable to create table. An unknown error occurred.
-        /// </exception>
+        /// <exception cref="SystemException">Unable to create table. An unknown error occurred.</exception>
         /// <exception cref="OverflowException">
         /// Combined minimum widths exceed maximum int value.
         /// </exception>
@@ -200,9 +196,7 @@ namespace Shojy.MigraDocUtils
         /// Combined value of <paramref name="minColumnWidths" /> exceeds the maxmimum table width
         /// specified in <paramref name="fullWidth" />.
         /// </exception>
-        /// <exception cref="SystemException">
-        /// Unable to create table. An unknown error occurred.
-        /// </exception>
+        /// <exception cref="SystemException">Unable to create table. An unknown error occurred.</exception>
         /// <exception cref="OverflowException">
         /// Combined minimum widths exceed maximum int value.
         /// </exception>
@@ -218,7 +212,7 @@ namespace Shojy.MigraDocUtils
                     if (totalMin > fullWidth)
                     {
                         throw new ArgumentOutOfRangeException(
-                            nameof(minColumnWidths),
+                            "minColumnWidths",
                             "Combined minimum width exceeds the maximum table width.");
                     }
                 }
