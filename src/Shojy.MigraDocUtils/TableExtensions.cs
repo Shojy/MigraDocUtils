@@ -8,13 +8,14 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Shojy.MigraDocUtils
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using MigraDoc.DocumentObjectModel;
     using MigraDoc.DocumentObjectModel.Shapes;
     using MigraDoc.DocumentObjectModel.Shapes.Charts;
     using MigraDoc.DocumentObjectModel.Tables;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// The table extensions.
@@ -23,14 +24,20 @@ namespace Shojy.MigraDocUtils
     {
         #region Private Fields
 
-        private static Dictionary<Table, int[]> autoTables;
+        /// <summary>
+        /// Collection of table references for tables that should be automatically sized. Int array defines minimum widths for each column.
+        /// </summary>
+        private static Dictionary<Table, int[]> _autoTables;
 
         #endregion Private Fields
 
         #region Private Properties
 
-        private static Dictionary<Table, int[]> AutoTables
-        { get { return autoTables ?? (autoTables = new Dictionary<Table, int[]>()); } }
+        /// <summary>
+        /// Gets the collection of table references for tables that should be automatically sized. Int array defines minimum widths for each column.
+        /// Will initialise a new dictionary if required.
+        /// </summary>
+        private static Dictionary<Table, int[]> AutoTables => _autoTables ?? (_autoTables = new Dictionary<Table, int[]>());
 
         #endregion Private Properties
 
@@ -55,7 +62,9 @@ namespace Shojy.MigraDocUtils
         /// <param name="data">The data.</param>
         public static void AddData(this Cell cell, object data)
         {
-            // Todo: Reorder based on frequency of use for performace
+
+            // Improvement: Reorder based on frequency of use for performance
+            // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
             if (data is FormattedText)
             {
                 cell.AddParagraph().Add((FormattedText)data);
@@ -85,6 +94,7 @@ namespace Shojy.MigraDocUtils
                 // Default all other data types as their string versions.
                 cell.AddParagraph(data.ToString());
             }
+            // ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
         }
 
         /// <summary>
@@ -107,14 +117,14 @@ namespace Shojy.MigraDocUtils
             // Validate the data values to be added to the table.
             if (null == data)
             {
-                throw new ArgumentNullException("data", "data cannot be null.");
+                throw new ArgumentNullException(nameof(data), "data cannot be null.");
             }
 
             try
             {
                 if (table.Columns.Count < data.Count())
                 {
-                    throw new ArgumentOutOfRangeException("data", "Number of values to add is greater than the number of columns in the table");
+                    throw new ArgumentOutOfRangeException(nameof(data), "Number of values to add is greater than the number of columns in the table");
                 }
             }
             catch (OverflowException overflowException)
@@ -134,8 +144,21 @@ namespace Shojy.MigraDocUtils
                 row.Cells.Add(cell);
             }
 
-            if (AutoTables.ContainsKey(table))
+            if (!AutoTables.ContainsKey(table))
             {
+                return table;
+            }
+
+            var widths = AutoTables[table];
+
+            var maxContentWidths = MaxContentSizesByColumn(table);
+            double scaleableWidth = Math.Abs(widths.Sum() - (2 * widths[0]));
+
+            var atom = scaleableWidth / maxContentWidths.Sum();
+
+            for (var i = 0; i < table.Columns.Count; ++i)
+            {
+                table.Columns[i].Width = widths[i + 1] + (int)(atom * maxContentWidths[i]);
             }
 
             return table;
@@ -213,7 +236,7 @@ namespace Shojy.MigraDocUtils
                     if (totalMin > fullWidth)
                     {
                         throw new ArgumentOutOfRangeException(
-                            "minColumnWidths",
+                            nameof(minColumnWidths),
                             "Combined minimum width exceeds the maximum table width.");
                     }
                 }
@@ -226,9 +249,12 @@ namespace Shojy.MigraDocUtils
                     throw new SystemException("Unable to create table. An unknown error occurred.", argumentException);
                 }
             }
+
             try
             {
-                AutoTables.Add(table, minColumnWidths);
+                var widths = new List<int> { fullWidth };
+                widths.AddRange(minColumnWidths ?? new int[0]);
+                AutoTables.Add(table, widths.ToArray());
             }
             catch (ArgumentException argumentException)
             {
@@ -236,6 +262,30 @@ namespace Shojy.MigraDocUtils
             }
 
             return table;
+        }
+
+        /// <summary>
+        /// The max content sizes by column.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <returns>The collection of maximum column sizes.</returns>
+        private static int[] MaxContentSizesByColumn(Table table)
+        {
+            var maxContentWidths = new int[table.Columns.Count];
+
+            foreach (Row r in table.Rows)
+            {
+                for (var i = 0; i < r.Cells.Count; ++i)
+                {
+                    var size = r.Cells[i].AsPlainText().Length;
+
+                    if (size > maxContentWidths[i])
+                    {
+                        maxContentWidths[i] = size;
+                    }
+                }
+            }
+            return maxContentWidths;
         }
 
         #endregion Private Methods

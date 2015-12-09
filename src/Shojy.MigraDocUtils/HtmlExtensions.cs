@@ -3,7 +3,8 @@
 //     (c) Copyright Joshua Moon 2015
 // </copyright>
 // <summary>
-// The extensions.
+// Provides methods for handling HTML data and rendering it within documents. Currently does not
+// support styles, only base elements.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 namespace Shojy.MigraDocUtils
@@ -13,7 +14,8 @@ namespace Shojy.MigraDocUtils
     using MigraDoc.DocumentObjectModel;
 
     /// <summary>
-    /// The extensions.
+    /// Provides methods for handling HTML data and rendering it within documents. Currently does
+    /// not support styles, only base elements.
     /// </summary>
     public static class HtmlExtensions
     {
@@ -85,7 +87,7 @@ namespace Shojy.MigraDocUtils
         /// The render from html string.
         /// </summary>
         /// <param name="html">The html.</param>
-        /// <param name="root">The root.</param>
+        /// <param name="root">The root element.</param>
         /// <returns>The <see cref="DocumentObject" />.</returns>
         private static DocumentObject RenderFromHtmlString(string html, DocumentObject root)
         {

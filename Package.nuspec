@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Shojy.MigraDocUtils</id>
-    <version>0.1.1</version>
+    <version>0.1.2-dev</version>
     <authors>Shojy</authors>
     <owners>Shojy</owners>
     <projectUrl>https://github.com/Shojy/MigraDocUtils</projectUrl>

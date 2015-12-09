@@ -28,7 +28,7 @@ namespace Shojy.MigraDocUtils
         /// </summary>
         /// <param name="obj">The element.</param>
         /// <returns>The unformatted text within the element.</returns>
-        public static string PlainText(this DocumentObject obj)
+        public static string AsPlainText(this DocumentObject obj)
         {
             var builder = new StringBuilder();
 
@@ -84,8 +84,7 @@ namespace Shojy.MigraDocUtils
 
                 case SymbolName.HardBlank:
                     return '\u00A0';
-
-                case SymbolName.Blank:
+                    
                 default:
                     return '\u0020';
             }
