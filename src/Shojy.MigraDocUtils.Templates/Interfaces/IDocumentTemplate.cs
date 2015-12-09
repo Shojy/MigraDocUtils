@@ -15,9 +15,7 @@
 
 namespace Shojy.MigraDocUtils.Templates
 {
-    /// <summary>
-    ///     The DocumentTemplate interface.
-    /// </summary>
+    /// <summary>The DocumentTemplate interface.</summary>
     public interface IDocumentTemplate
     {
         #region Public Methods
@@ -72,11 +70,13 @@ namespace Shojy.MigraDocUtils.Templates
         /// <summary>
         /// Defines the order of items within the document.
         /// </summary>
-        /// <param name="items">An in-order collection of document part types.</param>
+        /// <param name="items">
+        /// An in-order collection of document part types.
+        /// </param>
         /// <returns>
         /// The <see cref="IDocumentTemplate"/> being operated on.
         /// </returns>
-        IDocumentTemplate OrderDocument(params DocumentParts[] items);
+        IDocumentTemplate OrderDocument(params string[] items);
 
         #endregion Public Methods
     }

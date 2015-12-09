@@ -63,12 +63,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chapter.cs" />
-    <Compile Include="DocumentParts.cs" />
+    <Compile Include="DocumentPartTypes.cs" />
     <Compile Include="DocumentTemplate.cs" />
+    <Compile Include="DocumentTheme.cs" />
     <Compile Include="Interfaces\IAppendix.cs" />
     <Compile Include="Interfaces\IChapter.cs" />
     <Compile Include="Interfaces\IDocumentPart.cs" />
     <Compile Include="Interfaces\IDocumentTemplate.cs" />
+    <Compile Include="Interfaces\IDocumentTheme.cs" />
     <Compile Include="Interfaces\IFrontPage.cs" />
     <Compile Include="Interfaces\ITableOfContents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

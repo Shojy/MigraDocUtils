@@ -1,5 +1,5 @@
 ﻿#region Header
-// <copyright company="Joshua Moon" file="DocumentParts.cs">
+// <copyright company="Joshua Moon" file="DocumentPartTypes.cs">
 // Copyright (c) 2015 Joshua Moon All Rights Reserved.
 // </copyright>
 // <summary>
@@ -16,26 +16,26 @@ namespace Shojy.MigraDocUtils.Templates
     /// <summary>
     /// Represents a type of document part.
     /// </summary>
-    public enum DocumentParts
+    public static class DocumentPartTypes
     {
         /// <summary>
         /// Represents the Front Page of the document.
         /// </summary>
-        FrontPage,
+        public const string FrontPage = "DOCUMENT::FRONT_PAGE";
 
         /// <summary>
         /// Represents a document's table of contents.
         /// </summary>
-        TableOfContents,
+        public const string TableOfContents = "DOCUMENT::TABLE_OF_CONTENTS";
 
         /// <summary>
         /// Represents the collection of appendices for a document.
         /// </summary>
-        Appendices,
+        public const string Appendices = "DOCUMENT::APPENDICES";
 
         /// <summary>
-        /// Represents the document's content. Usually this will be the collection of chapters, but can be any type of document part.
+        /// Represents the document's main content. Usually this will be the collection of chapters, but can be any type of document part.
         /// </summary>
-        Content
+        public const string Chapters = "DOCUMENT::CHAPTERS";
     }
 }
